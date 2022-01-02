@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>canvas星空背景相册dome</title>
+    <style type="text/css">
+        html{
+            width: 100%;
+            height: 100%;
+        }
+        .bigbox{
+            width: 10px;
+            height: 10px;
+            margin: 200px 400px;
+            position: relative;
+            z-index: 1;
+        }
+        .box{
+            width:600px;
+            height:600px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transform: rotateX(-30deg) rotateY(-80deg);
+            -webkit-animation: mystyle 15s infinite;
+            animation-timing-function: linear;
+        }
+        @-webkit-keyframes mystyle{
+            from{transform: rotateX(-180deg) rotateY(-180deg);}
+            to{transform: rotateX(180deg) rotateY(180deg);}
+        }
+        .box div{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            opacity: 0.8;
+            transition: all .4s;
+        }
+        .bigpic{
+            width: 200px;
+            height: 200px;
+        }
+        .box .bigfront{
+            transform: rotateY(0deg) translateZ(100px);
+        }
+        .box .bigback{
+            transform: translateZ(-100px) rotateY(180deg);
+        }
+        .box .bigleft{
+            transform: rotateY(90deg) translateZ(100px);
+        }
+        .box .bigright{
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+        .box .bigtop{
+            transform: rotateX(90deg) translateZ(100px);
+        }
+        .box .bigbottom{
+            transform: rotateX(-90deg) translateZ(100px);
+        }
+        .box span{
+            display: block;
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            top: 25px;
+            left: 25px;
+        }
+        .box .smallpic{
+            width: 140px;
+            height: 140px;
+        }
+        .box .smallleft{
+            transform: rotateY(90deg) translateZ(70px);
+        }
+        .box .smallright{
+            transform: rotateY(-90deg) translateZ(70px);
+        }
+        .box .smalltop{
+            transform: rotateX(90deg) translateZ(70px);
+        }
+        .box .smallbottom{
+            transform: rotateX(-90deg) translateZ(70px);
+        }
+        .box .smallfront{
+            transform: rotateY(0deg) translateZ(70px);
+        }
+        .box .smallback{
+            transform: translateZ(-70px) rotateY(180deg);
+        }
+        /*:hover 我们之前说过的一个css选择器，能够让鼠标指向的时候触发*/
+        .box:hover .bigleft{
+            transform: rotateY(90deg) translateZ(300px);
+        }
+        .box:hover .bigright{
+            transform: rotateY(-90deg) translateZ(300px);
+        }
+        .box:hover .bigtop{
+            transform: rotateX(90deg) translateZ(300px);
+        }
+        .box:hover .bigbottom{
+            transform: rotateX(-90deg) translateZ(300px);
+        }
+        .box:hover .bigfront{
+            transform: rotateY(0deg) translateZ(300px);
+        }
+        .box:hover .bigback{
+            transform: translateZ(-300px) rotateY(180deg);
+        }
+        body,p,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,input,iframe,nav {
+            margin: 0;
+            padding: 0;
+        }
+        html,body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            font: 14px Microsoft YaHei;
+            -webkit-text-size-adjust:100%;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+            background: #000;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            opacity: .8;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="bigbox">
+    <div class="box">
+        <div class="bigfront">
+            <img src="./static/images/1.jpg" class="bigpic" >
+        </div>
+        <div class="bigback">
+            <img src="./static/images/2.jpg" class="bigpic">
+        </div>
+        <div class="bigleft">
+            <img src="./static/images/3.jpg" class="bigpic">
+        </div>
+        <div class="bigright">
+            <img src="./static/images/4.jpg" class="bigpic">
+        </div>
+        <div class="bigtop">
+            <img src="./static/images/5.jpg" class="bigpic">
+        </div>
+        <div class="bigbottom">
+            <img src="./static/images/6.jpg" class="bigpic">
+        </div>
+        <span class="smallfront">
+          <img src="./static/images/7.jpg" class="smallpic" />
+        </span>
+        <span class="smallback">
+          <img src="./static/images/8.jpg" class="smallpic" />
+        </span>
+        <span class="smallleft">
+          <img src="./static/images/9.jpg" class="smallpic" />
+        </span>
+        <span class="smallright">
+          <img src="./static/images/10.jpg" class="smallpic" />
+        </span>
+        <span class="smalltop">
+          <img src="./static/images/11.jpg" class="smallpic" />
+        </span>
+        <span class="smallbottom">
+          <img src="./static/images/2.jpg" class="smallpic" />
+        </span>
+    </div>
+</div>
+<canvas id="canvas"></canvas>
+</body>
+<script>
+    //宇宙特效
+    var canvas = document.getElementById('canvas'),
+        ctx = canvas.getContext('2d'),
+        w = canvas.width = window.innerWidth,
+        h = canvas.height = window.innerHeight,
+
+        hue = 217,
+        stars = [],
+        count = 0,
+        maxStars = 1100;    //星星数量,默认1300
+    var canvas2 = document.createElement('canvas'),
+        ctx2 = canvas2.getContext('2d');
+    canvas2.width = 100;
+    canvas2.height = 100;
+    var half = canvas2.width / 2,
+        gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+    gradient2.addColorStop(0.025, '#CCC');
+    gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+    gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+    gradient2.addColorStop(1, 'transparent');
+
+    ctx2.fillStyle = gradient2;
+    ctx2.beginPath();
+    ctx2.arc(half, half, half, 0, Math.PI * 2);
+    ctx2.fill();
+
+    // End cache
+    function random(min, max) {
+        if (arguments.length < 2) {
+            max = min;
+            min = 0;
+        }
+
+        if (min > max) {
+            var hold = max;
+            max = min;
+            min = hold;
+        }
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function maxOrbit(x, y) {
+        var max = Math.max(x, y),
+            diameter = Math.round(Math.sqrt(max * max + max * max));
+        return diameter / 2;
+        //星星移动范围，值越大范围越小，
+    }
+
+    var Star = function() {
+
+        this.orbitRadius = random(maxOrbit(w, h));
+        this.radius = random(60, this.orbitRadius) / 10;  //星星大小,值越大星星越小,默认8
+
+        this.orbitX = w / 2;
+        this.orbitY = h / 2;
+        this.timePassed = random(0, maxStars);
+        this.speed = random(this.orbitRadius) / 8000;  //星星移动速度,值越大越慢,默认5K
+
+        this.alpha = random(2, 10) / 10;
+
+        count++;
+        stars[count] = this;
+    }
+
+    Star.prototype.draw = function() {
+        var x = Math.sin(this.timePassed) * this.orbitRadius + this.orbitX,
+            y = Math.cos(this.timePassed) * this.orbitRadius + this.orbitY,
+            twinkle = random(10);
+
+        if (twinkle === 1 && this.alpha > 0) {
+            this.alpha -= 0.05;
+        } else if (twinkle === 2 && this.alpha < 1) {
+            this.alpha += 0.05;
+        }
+
+        ctx.globalAlpha = this.alpha;
+        ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+        this.timePassed += this.speed;
+    }
+
+    for (var i = 0; i < maxStars; i++) {
+        new Star();
+    }
+
+    function animation() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 0.5;         //尾巴
+        ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 2)';
+        ctx.fillRect(0, 0, w, h)
+
+        ctx.globalCompositeOperation = 'lighter';
+        for (var i = 1,
+                 l = stars.length; i < l; i++) {
+            stars[i].draw();
+        };
+
+        window.requestAnimationFrame(animation);
+    }
+
+    animation();
+</script>
+</html>
