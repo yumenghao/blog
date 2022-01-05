@@ -10,6 +10,9 @@
 .m-padding-tiny{
     padding: 0.3em !important;
 }
+.m-padding{
+    padding: 1em !important;
+}
 .m-padded-tb-mini{
     padding-top: 0.2em !important;
     padding-bottom: 0.2em !important;
@@ -144,4 +147,13 @@
 .m-shadow-small{
     -webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+}
+
+.m-fixed {
+    position: fixed !important;
+    z-index: 10 !important;
+}
+.m-right-bottom {
+    bottom: 0 !important;
+    right: 0 !important;
 }
