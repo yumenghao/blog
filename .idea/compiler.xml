@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="blog-server" />
         <module name="blog-static" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="blog-static" target="1.5" />
+      <module name="blog-server" target="1.8" />
+      <module name="blog-static" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
