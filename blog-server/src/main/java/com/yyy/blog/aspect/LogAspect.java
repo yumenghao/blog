@@ -22,7 +22,7 @@ public class LogAspect {
     public void log(){}
 
 
-    @Before("log()")
+    @Before(value = "log()")
     public void doBefore(JoinPoint joinPoint){
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -34,12 +34,12 @@ public class LogAspect {
         logger.info("Request : {}",requestLog);
     }
 
-    @After("log()")
+    @After(value = "log()")
     public void doAfter(){
         logger.info("doAfter");
     }
 
-    @AfterReturning(returning = "result",pointcut = "log()")
+    @AfterReturning(returning = "result",value = "log()")
     public void doAfterReturn(Object result){
         logger.info("Result : {}" + result);
     }
